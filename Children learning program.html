@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12-Week Learning Program</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --bg-surface: #1e293b;
+  --border: rgba(148,163,184,0.1);
+  --border-active: rgba(99,179,237,0.4);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-violet: #8b5cf6;
+  --accent-orange: #f97316;
+  --gradient-hero: linear-gradient(135deg, #1e3a5f 0%, #0b1120 50%, #1a1040 100%);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+  --radius: 14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.hero {
+  background: var(--gradient-hero);
+  padding: 36px 20px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.12), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.1), transparent);
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, #e2e8f0, #93c5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+/* Child Selector */
+.child-selector {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.child-btn {
+  flex:1; padding: 14px 12px;
+  border: none; background: transparent;
+  color: var(--text-muted);
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.25s;
+}
+.child-btn.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+  background: rgba(6,182,212,0.05);
+}
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tab {
+  flex: 0 0 auto;
+  padding: 11px 16px;
+  border: none; background: transparent;
+  color: var(--text-muted);
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+}
+/* Week Selector */
+.week-nav {
+  display: flex;
+  gap: 6px;
+  padding: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.week-pill {
+  flex: 0 0 auto;
+  min-width: 44px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  font-family: inherit; font-size: 11px; font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.week-pill.active {
+  border-color: var(--accent-blue);
+  background: rgba(59,130,246,0.12);
+  color: var(--accent-blue);
+}
+.week-pill.completed {
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(16,185,129,0.3);
+  color: var(--accent-emerald);
+}
+/* Content area */
+.content { padding: 0 14px 100px; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 800;
+  margin: 20px 0 14px;
+  color: var(--text-primary);
+}
+.day-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.day-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.day-header:hover { background: var(--bg-card-hover); }
+.day-name {
+  font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px;
+}
+.day-name .emoji { font-size: 22px; }
+.day-theme { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-left: 32px; margin-top: 2px; }
+.day-score { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+.day-body { padding: 0 16px 16px; display: none; }
+.day-body.open { display: block; }
+.task-item {
+  background: var(--bg-surface);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--text-muted);
+  transition: all 0.2s;
+}
+.task-item.done { border-left-color: var(--accent-emerald); opacity: 0.7; }
+.task-area {
+  display: inline-block;
+  font-size: 9px; font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.area-reading { background: rgba(245,158,11,0.15); color: var(--accent-amber); border-left-color: var(--accent-amber); }
+.area-email { background: rgba(59,130,246,0.15); color: var(--accent-blue); border-left-color: var(--accent-blue); }
+.area-ai { background: rgba(139,92,246,0.15); color: var(--accent-violet); border-left-color: var(--accent-violet); }
+.area-logic { background: rgba(6,182,212,0.15); color: var(--accent-cyan); border-left-color: var(--accent-cyan); }
+.area-notes { background: rgba(16,185,129,0.15); color: var(--accent-emerald); border-left-color: var(--accent-emerald); }
+.area-project { background: rgba(249,115,22,0.15); color: var(--accent-orange); border-left-color: var(--accent-orange); }
+.area-fun { background: rgba(244,63,94,0.15); color: var(--accent-rose); border-left-color: var(--accent-rose); }
+.area-review { background: rgba(139,92,246,0.15); color: var(--accent-violet); border-left-color: var(--accent-violet); }
+.task-desc { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 6px 0 10px; }
+.task-detail { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.task-check {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.task-check:hover { background: rgba(255,255,255,0.07); }
+.task-check .box {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.task-check.checked .box {
+  border-color: var(--accent-emerald);
+  background: rgba(16,185,129,0.2);
+  color: var(--accent-emerald);
+}
+.task-check .label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.task-check.checked .label { color: var(--accent-emerald); }
+/* KPI Panel */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.kpi-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  text-align: center;
+}
+.kpi-box .val {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 900;
+}
+.kpi-box .lbl { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+.kpi-full {
+  grid-column: 1 / -1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.progress-bar {
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress-bar .fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+.rating-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  margin-top: 8px;
+}
+.rating-excellent { background: rgba(16,185,129,0.15); color: var(--accent-emerald); }
+.rating-good { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+.rating-needs { background: rgba(244,63,94,0.15); color: var(--accent-rose); }
+/* Notes */
+.notes-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.notes-form label {
+  display: block;
+  font-size: 12px; font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 6px; margin-top: 14px;
+}
+.notes-form label:first-child { margin-top: 0; }
+.notes-form select, .notes-form textarea {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 13px;
+  resize: vertical;
+}
+.notes-form textarea { min-height: 60px; }
+.notes-form select:focus, .notes-form textarea:focus {
+  outline: none; border-color: var(--accent-blue);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px;
+  border: none; border-radius: 10px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--accent-blue); color: #fff; }
+.btn-primary:hover { background: #2563eb; }
+.btn-emerald { background: var(--accent-emerald); color: #fff; }
+.btn-rose { background: rgba(244,63,94,0.15); color: var(--accent-rose); border: 1px solid rgba(244,63,94,0.2); }
+.saved-note {
+  background: var(--bg-surface);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--accent-emerald);
+}
+.saved-note .meta { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+.saved-note .field { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.5; }
+.saved-note .field strong { color: var(--text-primary); font-weight: 600; }
+/* Weekly report */
+.report-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.report-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+.report-section textarea {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: inherit; font-size: 13px;
+  resize: vertical;
+  min-height: 50px;
+}
+.report-section textarea:focus { outline: none; border-color: var(--accent-blue); }
+/* Submission */
+.submission-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.sub-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase;
+}
+.sub-required { background: rgba(244,63,94,0.12); color: var(--accent-rose); }
+.sub-optional { background: rgba(148,163,184,0.12); color: var(--text-muted); }
+.sub-done { background: rgba(16,185,129,0.12); color: var(--accent-emerald); }
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--text-muted); font-size: 13px;
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+.animate-in { animation: fadeIn 0.3s ease; }
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ============================
+// FULL 12-WEEK CURRICULUM DATA
+// ============================
+const CURRICULUM = buildCurriculum();
+
+function buildCurriculum() {
+  const weeks = [];
+
+  const readingBooks10 = [
+    "Charlotte's Web (Ch.1–3)","Charlotte's Web (Ch.4–6)","Charlotte's Web (Ch.7–10)","Charlotte's Web (Ch.11–14)",
+    "The One and Only Ivan (Ch.1–4)","The One and Only Ivan (Ch.5–8)","The One and Only Ivan (Ch.9–12)","The One and Only Ivan (Ch.13–end)",
+    "Wonder (Part 1)","Wonder (Part 2)","Wonder (Part 3)","Wonder (Part 4)"
+  ];
+  const readingBooks12 = [
+    "The Giver (Ch.1–3)","The Giver (Ch.4–6)","The Giver (Ch.7–10)","The Giver (Ch.11–14)",
+    "Hatchet (Ch.1–4)","Hatchet (Ch.5–8)","Hatchet (Ch.9–12)","Hatchet (Ch.13–end)",
+    "The Outsiders (Ch.1–3)","The Outsiders (Ch.4–6)","The Outsiders (Ch.7–9)","The Outsiders (Ch.10–12)"
+  ];
+
+  const emailTopics = [
+    ["What I did at school today","A book I'm reading","Something kind I saw","My favorite meal this week"],
+    ["A goal I set this week","Something I found difficult","A question I asked today","How I helped someone"],
+    ["Something new I tried","What I'm proud of","A mistake I learned from","My plan for tomorrow"],
+    ["A fun memory from this week","What I would teach someone","Something that surprised me","A skill I practiced"],
+    ["My morning routine","An animal I learned about","A conversation I had","How I stayed organized"],
+    ["Something I built or made","A problem I solved","My favorite part of the day","Advice I'd give a friend"],
+    ["A place I'd like to visit","Something I read about","How I managed my time","A challenge I accepted"],
+    ["A person I admire","What teamwork means to me","Something I noticed outdoors","How I stayed focused"],
+    ["My biggest question today","A healthy choice I made","Something I improved at","What patience means to me"],
+    ["A tradition I enjoy","How I deal with stress","Something I want to learn","A rule I think is important"],
+    ["How I show kindness","A technology I used","What responsibility means","My favorite learning moment"],
+    ["My growth this year","What I'm grateful for","My plans for the future","A letter to my future self"]
+  ];
+
+  const aiTasks10 = [
+    ["Ask AI: 'Explain gravity like I'm 10.' Draw what you understand.","Ask AI: 'Give me 5 facts about volcanoes.' Pick the most surprising one and explain why.","Ask AI to help you write a short story opening (3 sentences). Change 3 words to make it yours.","Ask AI: 'What are 3 ways kids can save water?' Make a poster with the best idea."],
+    ["Ask AI: 'How do fish breathe underwater?' Write 3 sentences in your own words.","Ask AI: 'Create a word puzzle about animals.' Solve it yourself.","Ask AI: 'Tell me about ancient Egypt.' Pick 1 fact and teach it to someone.","Ask AI: 'Help me describe a rainy day using all 5 senses.' Edit the result."],
+    ["Ask AI the same question 2 ways. Which answer was better? Why?","Ask AI: 'What happens to food after I eat it?' Draw the 4 steps.","Ask AI to explain what 'coding' means. Ask 1 follow-up question.","Ask AI: 'Give me a recipe for a healthy snack.' Could you really make it? Why or why not?"],
+    ["Ask AI: 'Create 5 quiz questions about space.' Take the quiz first, then check.","Ask AI: 'How do plants make food?' Make a mini-poster with labels.","Ask AI: 'Write a poem about the ocean.' Change at least 3 words.","Ask AI to compare cats and dogs. Add your own opinion with reasons."],
+    ["Ask AI: 'What does a vet do every day?' Present to family in 1 minute.","Ask AI: 'Explain recycling.' Make a household recycling plan.","Ask AI: 'Create a math word problem.' Solve it, then verify with AI.","Ask AI: 'What inventions changed the world?' Pick one and explain why."],
+    ["Ask AI: 'How does the internet work?' Draw a simple diagram.","Ask AI: 'Help me write a letter to a friend.' Edit 5 things to make it personal.","Ask AI: 'What causes rainbows?' Explain it to someone younger than you.","Ask AI to write a conversation between a cat and dog. Add 4 more lines yourself."],
+    ["Ask AI: 'What are 3 study tips for kids?' Try one today and report back.","Ask AI: 'Explain electricity simply.' Draw a circuit diagram.","Ask AI: 'Make a list of 5 creative writing prompts.' Pick one and write 5 sentences.","Ask AI: 'Compare the sun and the moon.' Add 2 facts AI didn't mention."],
+    ["Ask AI: 'What does a pilot need to learn?' Would you want this job? Why?","Ask AI: 'Help me plan a weekend trip for my family.' Add your own ideas.","Ask AI: 'Explain what robots can and can't do.' Write your opinion.","Ask AI: 'Create a word search about healthy foods.' Solve it."],
+    ["Ask AI: 'What are 5 ways to be a better listener?' Practice one today.","Ask AI: 'Explain how bridges stay up.' Build a paper bridge and test it.","Ask AI: 'Write a haiku about nature.' Write your own version too.","Ask AI about your favorite animal. Check: did AI get everything right?"],
+    ["Ask AI: 'What is teamwork?' Create a mini-poster with 3 rules for good teamwork.","Ask AI: 'How do airplanes fly?' Explain it in your own words.","Ask AI: 'Give me 3 brain teasers.' Solve without help first.","Ask AI: 'What makes a good leader?' Write about someone you think is a good leader."],
+    ["Ask AI: 'Explain 3 types of energy.' Find examples at home.","Ask AI to review a paragraph you wrote. Did you agree with the suggestions?","Ask AI: 'What are the biggest deserts in the world?' Locate them on a map.","Ask AI: 'Help me plan a healthy meal.' Make a shopping list."],
+    ["Ask AI: 'What should kids know about using AI safely?' Discuss with a parent.","Ask AI: 'Help me write a speech about what I learned this year.' Practice it aloud.","Ask AI: 'What will schools look like in 50 years?' Write your own prediction.","Use AI to review everything you created this program. What improved most?"]
+  ];
+
+  const aiTasks12 = [
+    ["Ask AI: 'Explain photosynthesis with an analogy.' Evaluate if the analogy works. Write a better one if you can.","Ask AI: 'Give me 5 facts about black holes.' Research one more fact AI didn't mention.","Ask AI to write an essay intro on 'Why reading matters.' Rewrite it in your own style.","Ask AI: 'What are the pros and cons of social media for teens?' Form your own opinion with 3 arguments."],
+    ["Ask AI: 'Explain the water cycle.' Create an infographic-style poster.","Ask AI: 'How do vaccines work?' Write a 1-paragraph explanation for a 10-year-old.","Ask AI the same prompt with different wording 3 times. Analyze which prompt worked best and why.","Ask AI: 'Compare democracy and monarchy.' Add a historical example for each."],
+    ["Ask AI: 'What is machine learning?' Write 5 sentences explaining it simply.","Ask AI to fact-check a statement you make up. Was AI correct? How do you know?","Ask AI: 'Help me improve this paragraph.' Compare before and after. What changed?","Ask AI: 'What careers use math daily?' Research one career further."],
+    ["Ask AI: 'Create a debate — should homework be banned?' Argue both sides.","Ask AI: 'Explain how the stock market works simply.' Write 3 questions you still have.","Ask AI: 'Write a news article about climate change.' Identify 3 things you'd change.","Ask AI: 'What is bias in AI?' Discuss with a parent."],
+    ["Ask AI: 'Explain how GPS works.' Draw a simplified diagram.","Ask AI: 'Help me write a persuasive letter about a cause I care about.' Revise it heavily.","Ask AI: 'Give me 5 logic puzzles.' Solve without help, then check.","Ask AI: 'What does a data scientist do?' Is this a job you'd consider? Why?"],
+    ["Ask AI: 'Compare renewable vs non-renewable energy.' Create a comparison chart.","Ask AI: 'Help me analyze a poem.' Then analyze a different poem on your own.","Ask AI: 'Create a quiz about world geography.' Take it, then research wrong answers.","Ask AI: 'What is critical thinking?' Give 3 examples from your life."],
+    ["Ask AI: 'Explain supply and demand with examples.' Create your own example.","Ask AI: 'Review my essay for logic and flow.' Did you agree with all feedback?","Ask AI: 'What are 5 study strategies backed by science?' Try one this week.","Ask AI: 'Design a simple app idea.' Describe features and who would use it."],
+    ["Ask AI: 'How do computers store information?' Explain using an analogy.","Ask AI: 'Help me write a blog post about my hobby.' Make it authentically yours.","Ask AI: 'What is the Pythagorean theorem?' Solve 3 problems using it.","Ask AI: 'What should every teenager know about online safety?' Make a guide."],
+    ["Ask AI: 'Explain how elections work.' Compare two countries' systems.","Ask AI: 'Help me outline a research paper on space exploration.' Add your own thesis.","Ask AI: 'What is an algorithm?' Write step-by-step instructions for making tea — that's an algorithm.","Ask AI: 'Give me 5 ethical dilemmas.' Write your answer for each."],
+    ["Ask AI: 'Explain inflation to a 12-year-old.' Then explain it to a 6-year-old.","Ask AI: 'Help me create a study schedule.' Customize it for your real subjects.","Ask AI: 'What makes a reliable source?' Evaluate 3 websites using those criteria.","Ask AI: 'What is the butterfly effect?' Find a real historical example."],
+    ["Ask AI: 'Compare 3 programming languages.' Which would you learn first? Why?","Ask AI: 'Help me write a cover letter for a pretend job.' Use real skills you have.","Ask AI: 'Create a timeline of major inventions.' Add 3 inventions AI forgot.","Ask AI: 'What is emotional intelligence?' Rate yourself and set 1 goal."],
+    ["Ask AI: 'What are 5 rules for using AI responsibly?' Create a family AI agreement.","Ask AI: 'Help me write a reflection speech on my 12-week journey.' Deliver it to family.","Ask AI: 'What skills will kids need in 2040?' Make your personal skill-building plan.","Use AI to create a portfolio of your best work from all 12 weeks. Present it."]
+  ];
+
+  const logicQuestions = [
+    [
+      ["2, 4, 8, 16, ___?","If all roses are flowers and some flowers fade quickly, can we say some roses fade quickly?","You have 12 apples and give away 1/3. How many left?"],
+      ["What's next: △○□△○□___?","A is taller than B. B is taller than C. Who is shortest?","15 × 4 ÷ 3 = ?"],
+      ["If 3 cats catch 3 mice in 3 min, how many cats catch 100 mice in 100 min?","Find the odd one out: 2, 5, 11, 23, __(pattern?)","If today is Wednesday, what day was it 100 days ago?"],
+      ["How many squares on a standard chessboard?","You have 2 hourglasses: 7 min and 4 min. How to time exactly 9 min?","3, 6, 11, 18, ___?"]
+    ],
+    [
+      ["1, 1, 2, 3, 5, 8, ___?","A snail climbs 3m up during day but slides 2m at night. How many days to reach 10m top?","What weighs more: 1kg of feathers or 1kg of iron?"],
+      ["If you rearrange 'CIFAIPC', what word do you get?","How many triangles in a triangle divided into 4 smaller triangles?","25% of 80 = ?"],
+      ["You have 8 coins, one is lighter. Using a balance scale, minimum weighings to find it?","Fill: 1, 4, 9, 16, 25, ___?","If A=1, B=2...Z=26, what does CAT equal?"],
+      ["How many ways can you make change for 50 cents using quarters, dimes, and nickels?","If 5 machines make 5 items in 5 min, how many items do 100 machines make in 100 min?","What comes next: J, F, M, A, M, ___?"]
+    ],
+    [
+      ["A farmer has 17 sheep. All but 9 run away. How many are left?","2, 6, 18, 54, ___?","How many legs do 3 dogs, 2 chickens, and 1 spider have?"],
+      ["If the day before yesterday was Thursday, what day is tomorrow?","What's 15% of 200?","Find the pattern: 1, 8, 27, 64, ___?"],
+      ["You have a 3L jug and 5L jug. How to measure exactly 4L?","If you fold a paper in half 7 times, how many layers?","What comes next: O, T, T, F, F, S, S, ___?"],
+      ["A clock shows 3:15. What's the angle between the hands?","If a shirt costs $20 after 25% off, what was original price?","How many times does the digit 3 appear between 1-100?"]
+    ],
+    [
+      ["Two fathers and two sons go fishing. They catch 3 fish, one each. How?","1, 3, 7, 15, 31, ___?","A train leaves A at 60 km/h. Another leaves B at 80 km/h. A-B distance is 280 km. When do they meet?"],
+      ["How many rectangles in a 3×3 grid?","If I double a number and add 14, I get 50. What's the number?","What's the next prime after 29?"],
+      ["You have 5 red, 3 blue, 4 green socks in a drawer (dark room). Min socks to guarantee a matching pair?","Simplify: 3² + 4² = ?² (think Pythagorean)","If 8 people shake hands once with each other, total handshakes?"],
+      ["A lily pad doubles in size daily. On day 30 it covers the whole pond. When was it half covered?","What percentage is 7 of 35?","How many digits in the number 2^10?"]
+    ],
+    [
+      ["If you reverse the digits of 36 and add both: 36+63=?","What's the smallest number divisible by both 12 and 18?","A rope is 60m long. Cut into pieces of 3.5m. Max pieces?"],
+      ["3 friends share a bill of $45 equally but have a $5 coupon. How much does each pay?","What's 3/5 as a percentage?","Find x: 2x + 7 = 23"],
+      ["How many times do clock hands overlap in 12 hours?","If 1 gallon = ~3.78 liters, approximately how many gallons in 20 liters?","A box has 3 red, 2 blue marbles. Probability of picking red?"],
+      ["If speed = distance/time, and you drive 150 km in 2.5 hrs, what's your speed?","What's the sum of angles in a pentagon?","Fibonacci: after 1,1,2,3,5,8,13, what are the next 3?"]
+    ],
+    [
+      ["A pizza is cut into 8 slices. You eat 3/8 and your friend eats 2/8. What fraction is left?","What's the area of a triangle with base 10 and height 6?","If a book has 250 pages and you read 30 pages/day, how many days to finish?"],
+      ["Decode: each letter = next letter. GDKKN = ?","What's 7! (7 factorial)?","If it takes 5 painters 4 days to paint a house, how long for 10 painters?"],
+      ["A clock loses 5 minutes every hour. After 12 hours, what time does it show if it started at noon?","What is 3⁴?","Estimate: √150 is closest to?"],
+      ["If you save $3 on Monday, $6 on Tuesday, $12 on Wednesday (doubling each day), how much after 7 days?","What's the perimeter of a regular hexagon with side 5cm?","What day is 1000 days from Monday?"]
+    ],
+    [
+      ["Convert 5/8 to a decimal and a percentage.","A train travels 250km in 2 hours. A car travels 180km in 3 hours. Which is faster and by how much?","What's the volume of a box that is 5×4×3 cm?"],
+      ["Solve: (15 × 8) ÷ (3 + 2) = ?","If the radius of a circle is 7cm, what's the approximate circumference?","In how many ways can you arrange the letters in 'CAT'?"],
+      ["25 students took a test. Average score is 78. If one student scored 100 is removed, new average?","What's 2/3 + 3/4?","A ladder is 10m long leaning against a wall, base 6m from wall. How high does it reach?"],
+      ["If gas costs $1.50/liter and your car uses 8L/100km, how much for a 350km trip?","What's 40% of 250?","How many 3-digit numbers can you make using 1,2,3 without repetition?"]
+    ],
+    [
+      ["A recipe serves 4 but you need it for 6. Original: 2 cups flour. How much now?","What's the probability of rolling a sum of 7 with two dice?","Convert 2.5 hours to minutes and seconds."],
+      ["If a population doubles every 20 years starting at 1000, what is it after 60 years?","What's the median of: 3, 7, 9, 15, 22?","Solve: 3(x-4) = 15"],
+      ["A map scale is 1:50,000. Two cities are 8cm apart on the map. Real distance in km?","What is the GCD of 36 and 48?","How many diagonals in a hexagon?"],
+      ["If water freezes at 0°C (32°F), convert 100°C to °F using the formula.","What's 15% tip on a $80 meal?","A coin is flipped 3 times. How many possible outcomes?"]
+    ],
+    [
+      ["If you invest $100 at 10% simple interest per year, how much after 3 years?","What's the mode of: 4, 7, 2, 7, 5, 7, 3?","Solve: x² = 144"],
+      ["A rectangle's length is twice its width. Perimeter is 36cm. Find dimensions.","What's the LCM of 8 and 12?","How many seconds in a day?"],
+      ["If a car uses 7L/100km, how much fuel for 450km?","What fraction of a day is 6 hours?","Graph: if y = 2x + 1, what are y values for x = 0,1,2,3?"],
+      ["Calculate BMI: weight 50kg, height 1.55m. BMI = weight/height².","What's the range of: 12, 45, 23, 67, 8, 34?","If 3 coins are tossed, probability of all heads?"]
+    ],
+    [
+      ["Speed problem: A runs at 8 km/h, B at 6 km/h. They start together. How far apart after 45 min?","What's 5³ - 4³?","Find the mean of: 88, 92, 76, 95, 84"],
+      ["A store offers 30% off, then another 20% off the sale price. Total discount on a $100 item?","What is π to 4 decimal places?","How many edges does a cube have?"],
+      ["If a ball is dropped from 100m and bounces to half height each time, total distance after 3 bounces?","Solve: 2(3x + 4) = 26","What's the area of a circle with radius 5? (use π ≈ 3.14)"],
+      ["Exchange rate: $1 = €0.85. How many euros for $150?","What's the surface area of a cube with side 4cm?","Probability: drawing an ace from a standard deck?"]
+    ],
+    [
+      ["A tank fills in 6 hours and drains in 10 hours. Both open — how long to fill?","What's √(64 + 36)?","Profit: Buy for $25, sell for $35. What's the profit percentage?"],
+      ["If f(x) = 2x + 3, find f(5) and f(-2).","A triangle has angles 55° and 70°. Third angle?","How many prime numbers between 1 and 50?"],
+      ["Compound interest: $200 at 5% compounded annually for 2 years.","What's the average speed if you drive 60km at 30km/h and 60km at 60km/h?","Convert 11010 (binary) to decimal."],
+      ["A square has diagonal √2 × side. If diagonal is 10cm, what's the side?","What is 0.875 as a fraction?","Combinations: choose 3 from 5 people. How many ways?"]
+    ],
+    [
+      ["Final challenge: If the hour hand moves 0.5°/min, how many degrees in 2 hours 20 min?","Arithmetic series: 3+7+11+15+...for 10 terms. Sum?","What's 2^10?"],
+      ["If a circle's area is 154 cm², what's the radius? (π≈22/7)","Solve the system: x+y=10, x-y=4","How many zeros at the end of 10!?"],
+      ["A boat goes 20km/h downstream, 12km/h upstream. Speed of current?","What is log₁₀(1000)?","Permutations: arrange 4 out of 7 items."],
+      ["Final: The sum 1+2+3+...+100 = ?","If sin 30° = 0.5, what is sin 150°?","Distance formula: points (1,2) and (4,6). Distance?"]
+    ]
+  ];
+
+  const fridayProjects = [
+    {title10:"Draw a 'My Family' poster with labels and 3 sentences about each person.", title12:"Create a 'My Family Tree' infographic going back 2 generations with interesting facts."},
+    {title10:"Build a mini weather station — track weather for 5 days with drawings.", title12:"Create a 5-day weather data chart. Compare with actual forecasts. How accurate were you?"},
+    {title10:"Design your dream bedroom — draw it and label furniture with measurements.", title12:"Design your dream room with a budget of 5000 AZN. Research real prices. Present your plan."},
+    {title10:"Create a mini-dictionary of 15 new words learned this month with drawings.", title12:"Create a 'Word Museum' — 20 interesting words, their origins, and use each in a creative sentence."},
+    {title10:"Plan a healthy menu for 1 day (breakfast, lunch, dinner). Draw the food.", title12:"Plan a full weekly meal schedule. Calculate approximate calories and cost for the family."},
+    {title10:"Make a board game using materials at home. Write the rules.", title12:"Design a mobile app concept — name, features, wireframe sketches, and target audience."},
+    {title10:"Create a comic strip (6+ panels) about a day in your life.", title12:"Write and illustrate a short graphic story (8+ panels) about solving a real-world problem."},
+    {title10:"Build the tallest/strongest structure from household items. Measure and document.", title12:"Engineering challenge: build a bridge from paper that holds the most weight. Document the process."},
+    {title10:"Interview a family member about their childhood. Write a 1-page 'article'.", title12:"Interview 2 family members about their careers. Write a comparison article."},
+    {title10:"Create a 'Travel Brochure' for your city with drawings and fun facts.", title12:"Research and create a detailed travel guide for a country you want to visit, including budget."},
+    {title10:"Make a 'Time Capsule' list: predictions for yourself 5 years from now.", title12:"Write a detailed letter to your 18-year-old self. Include goals, hopes, and current reflections."},
+    {title10:"Create a 'What I Learned' portfolio — your best work from all 12 weeks.", title12:"Build a complete portfolio with an intro, best work from each week, and a personal growth essay."}
+  ];
+
+  const saturdayActivities = [
+    {task10:"Nature walk: find 5 different leaves, draw them, and learn their names.", task12:"Nature observation journal: document 5 natural phenomena with sketches and scientific explanations."},
+    {task10:"Cook a simple recipe with a parent. Write the steps.", task12:"Plan and cook a meal independently. Document the process, challenges, and result."},
+    {task10:"Visit a library or bookstore. Choose a new book. Write why you chose it.", task12:"Visit a library. Research a topic of interest for 30 min. Write a summary."},
+    {task10:"Teach a younger child or sibling something you learned this week.", task12:"Prepare a 5-minute lesson on any topic and teach it to a family member."},
+    {task10:"Outdoor scavenger hunt: find 10 items from a list you make.", task12:"Create a scavenger hunt for someone else — write clues that require problem-solving."},
+    {task10:"Watch an educational video (15 min). Draw 3 things you learned.", task12:"Watch a documentary clip (20 min). Write a critical analysis — what was convincing and what wasn't?"},
+    {task10:"Play a strategy board game or card game. Write what strategy you used.", task12:"Play chess or a strategy game online. Write about your decision-making process."},
+    {task10:"Build something with recycled materials. Explain what it is and how it works.", task12:"DIY project: fix something at home or create something useful. Document with steps."},
+    {task10:"Draw a map of your neighborhood from memory. Compare with a real map.", task12:"Create a detailed map of your area. Add local businesses, landmarks, and your daily routes."},
+    {task10:"Create a dance, skit, or song about something you learned. Perform it!", task12:"Write and perform a 3-minute presentation on 'The most important thing I learned this month.'"},
+    {task10:"Do 3 random acts of kindness today. Write about how each person reacted.", task12:"Plan and execute a mini community service project. Document the impact."},
+    {task10:"Free play & creativity day! Make anything you want. Show your family.", task12:"Free project day: create anything — art, writing, code, craft. Present your creation."}
+  ];
+
+  for (let w = 0; w < 12; w++) {
+    const weekData = {
+      week: w + 1,
+      theme: getWeekTheme(w),
+      days: {}
+    };
+
+    // Mon-Thu
+    const dayNames = ["Monday","Tuesday","Wednesday","Thursday"];
+    for (let d = 0; d < 4; d++) {
+      weekData.days[dayNames[d]] = {
+        type: "core",
+        tasks: {
+          age10: {
+            reading: { text: `Read ${readingBooks10[w]} — pages ${(d*8)+1}–${(d+1)*8}`, time: "15-20 min", summary: `Write 5–8 sentence summary of today's reading.` },
+            email: { topic: emailTopics[w][d], sentences: "5–7 sentences" },
+            ai: { task: aiTasks10[w][d] },
+            logic: logicQuestions[w][d],
+            notes: true
+          },
+          age12: {
+            reading: { text: `Read ${readingBooks12[w]} — pages ${(d*10)+1}–${(d+1)*10}`, time: "15-20 min", summary: `Write 5–8 sentence summary of today's reading.` },
+            email: { topic: emailTopics[w][d], sentences: "8–12 sentences" },
+            ai: { task: aiTasks12[w][d] },
+            logic: logicQuestions[w][d],
+            notes: true
+          }
+        }
+      };
+    }
+
+    // Friday
+    weekData.days["Friday"] = {
+      type: "project",
+      tasks: {
+        age10: { project: fridayProjects[w].title10 },
+        age12: { project: fridayProjects[w].title12 }
+      }
+    };
+
+    // Saturday
+    weekData.days["Saturday"] = {
+      type: "light",
+      tasks: {
+        age10: { activity: saturdayActivities[w].task10 },
+        age12: { activity: saturdayActivities[w].task12 }
+      }
+    };
+
+    // Sunday
+    weekData.days["Sunday"] = { type: "review" };
+
+    weeks.push(weekData);
+  }
+  return weeks;
+}
+
+function getWeekTheme(w) {
+  const themes = [
+    "Foundation & Habits", "Curiosity & Discovery", "Expression & Voice",
+    "Analysis & Debate", "Research & Communication", "Creativity & Design",
+    "Strategy & Planning", "Independence & Confidence", "Critical Thinking",
+    "Leadership & Responsibility", "Synthesis & Connections", "Mastery & Celebration"
+  ];
+  return themes[w];
+}
+
+// ============================
+// APP STATE
+// ============================
+let state = {
+  child: 0, // 0=age10, 1=age12
+  tab: "plan", // plan | kpi | notes | submissions | report
+  week: 0,
+  openDay: null,
+  kpis: {}, // "child-week-day-task": true
+  notes: [], // {child, week, day, task, did, learned, difficult, improvement, timestamp}
+  reports: {}, // "child-week-field": "text"
+  submissions: {} // "child-week-day-type": true
+};
+
+// Load state
+try {
+  const saved = localStorage.getItem("lp12w_state_v3");
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    state = { ...state, ...parsed };
+  }
+} catch(e) {}
+
+function saveState() {
+  try {
+    localStorage.setItem("lp12w_state_v3", JSON.stringify({
+      kpis: state.kpis,
+      notes: state.notes,
+      reports: state.reports,
+      submissions: state.submissions
+    }));
+  } catch(e) {}
+}
+
+// ============================
+// HELPER FUNCTIONS
+// ============================
+function kpiKey(task, day) {
+  return `${state.child}-${state.week}-${day}-${task}`;
+}
+
+function isChecked(task, day) {
+  return !!state.kpis[kpiKey(task, day)];
+}
+
+function toggleKpi(task, day) {
+  const k = kpiKey(task, day);
+  state.kpis[k] = !state.kpis[k];
+  saveState();
+  render();
+}
+
+function getDayScore(day) {
+  const dayData = CURRICULUM[state.week].days[day];
+  if (!dayData) return { earned: 0, total: 0 };
+  if (dayData.type === "core") {
+    const tasks = ["reading","email","ai","logic","notes"];
+    const points = [1,2,1,1,1];
+    let earned = 0, total = 6;
+    tasks.forEach((t,i) => { if (isChecked(t, day)) earned += points[i]; });
+    return { earned, total };
+  }
+  if (dayData.type === "project") {
+    return { earned: isChecked("project", day) ? 4 : 0, total: 4 };
+  }
+  if (dayData.type === "light") {
+    return { earned: isChecked("activity", day) ? 2 : 0, total: 2 };
+  }
+  if (dayData.type === "review") {
+    return { earned: isChecked("review", day) ? 2 : 0, total: 2 };
+  }
+  return { earned: 0, total: 0 };
+}
+
+function getWeekScore(weekIdx) {
+  const saved = state.week;
+  state.week = weekIdx;
+  const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  let total = 0, earned = 0;
+  dayNames.forEach(d => {
+    const s = getDayScore(d);
+    total += s.total; earned += s.earned;
+  });
+  state.week = saved;
+  return { earned, total };
+}
+
+function getRating(score) {
+  if (score >= 25) return { text: "Excellent ⭐", cls: "rating-excellent" };
+  if (score >= 20) return { text: "Good 👍", cls: "rating-good" };
+  return { text: "Needs Improvement 📈", cls: "rating-needs" };
+}
+
+function getChildLabel() {
+  return state.child === 0 ? "Age 10" : "Age 12";
+}
+
+function getChildKey() {
+  return state.child === 0 ? "age10" : "age12";
+}
+
+// ============================
+// RENDER
+// ============================
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    ${renderHero()}
+    ${renderChildSelector()}
+    ${renderTabs()}
+    ${renderWeekNav()}
+    <div class="content animate-in">
+      ${renderContent()}
+    </div>
+  `;
+  attachEvents();
+}
+
+function renderHero() {
+  const ws = getWeekScore(state.week);
+  const totalWeeks = 12;
+  let completedWeeks = 0;
+  for (let i = 0; i < 12; i++) {
+    const s = getWeekScore(i);
+    if (s.earned >= 20) completedWeeks++;
+  }
+  const overallProgress = Math.round((completedWeeks / totalWeeks) * 100);
+
+  return `
+    <div class="hero">
+      <h1>📚 12-Week Learning Program</h1>
+      <p>Structured growth for ages 10 & 12 · 60–90 min/day</p>
+      <div style="margin-top:16px;">
+        <div class="progress-bar" style="height:14px;">
+          <div class="fill" style="width:${overallProgress}%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+          <span style="font-size:11px;color:var(--text-muted);">Program progress</span>
+          <span style="font-size:11px;font-weight:700;color:var(--accent-cyan);">${completedWeeks}/12 weeks · ${overallProgress}%</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderChildSelector() {
+  return `
+    <div class="child-selector">
+      <button class="child-btn ${state.child===0?'active':''}" onclick="switchChild(0)">👦 Child 1 — Age 10</button>
+      <button class="child-btn ${state.child===1?'active':''}" onclick="switchChild(1)">👧 Child 2 — Age 12</button>
+    </div>
+  `;
+}
+
+function renderTabs() {
+  const tabs = [
+    {id:"plan",label:"📋 Plan"},
+    {id:"kpi",label:"📊 KPIs"},
+    {id:"notes",label:"📝 Notes"},
+    {id:"submissions",label:"📤 Submit"},
+    {id:"report",label:"📑 Report"}
+  ];
+  return `
+    <div class="tabs">
+      ${tabs.map(t => `<button class="tab ${state.tab===t.id?'active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`).join('')}
+    </div>
+  `;
+}
+
+function renderWeekNav() {
+  let html = '<div class="week-nav">';
+  for (let i = 0; i < 12; i++) {
+    const ws = getWeekScore(i);
+    const completed = ws.earned >= 20;
+    const active = state.week === i;
+    html += `<button class="week-pill ${active?'active':''} ${completed&&!active?'completed':''}" onclick="switchWeek(${i})">
+      <div style="font-size:13px;font-weight:800;">W${i+1}</div>
+      <div style="font-size:9px;margin-top:2px;">${ws.earned}/${ws.total}</div>
+    </button>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderContent() {
+  switch(state.tab) {
+    case "plan": return renderPlan();
+    case "kpi": return renderKPI();
+    case "notes": return renderNotes();
+    case "submissions": return renderSubmissions();
+    case "report": return renderReport();
+    default: return renderPlan();
+  }
+}
+
+// ---- PLAN TAB ----
+function renderPlan() {
+  const week = CURRICULUM[state.week];
+  const key = getChildKey();
+  const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+
+  let html = `<h2 class="section-title">Week ${week.week}: ${week.theme}</h2>`;
+
+  dayNames.forEach(dayName => {
+    const dayData = week.days[dayName];
+    const score = getDayScore(dayName);
+    const isOpen = state.openDay === dayName;
+    const dayEmojis = {"Monday":"🚀","Tuesday":"🔬","Wednesday":"🎨","Thursday":"🗣️","Friday":"🛠️","Saturday":"🎮","Sunday":"🌟"};
+
+    html += `<div class="day-card" style="${score.earned===score.total&&score.total>0?'border-color:rgba(16,185,129,0.3);':''}">
+      <div class="day-header" onclick="toggleDay('${dayName}')">
+        <div>
+          <div class="day-name"><span class="emoji">${dayEmojis[dayName]}</span> ${dayName}</div>
+          <div class="day-theme">${getDayType(dayData.type)} · ${dayData.type==='core'?'~75 min':dayData.type==='project'?'~60 min':'~30 min'}</div>
+        </div>
+        <div class="day-score" style="color:${score.earned===score.total&&score.total>0?'var(--accent-emerald)':'var(--text-muted)'}">
+          ${score.earned}/${score.total} pts ${isOpen?'▲':'▼'}
+        </div>
+      </div>
+      <div class="day-body ${isOpen?'open':''}">
+        ${renderDayContent(dayName, dayData, key)}
+      </div>
+    </div>`;
+  });
+
+  return html;
+}
+
+function getDayType(type) {
+  const labels = {core:"Core Learning",project:"Mini-Project",light:"Light Activity",review:"Weekly Review"};
+  return labels[type] || type;
+}
+
+function renderDayContent(dayName, dayData, key) {
+  if (dayData.type === "core") {
+    const t = dayData.tasks[key];
+    return `
+      ${renderTask("reading", dayName, "📖", "Reading", "area-reading", `<strong>${t.reading.text}</strong><br><span class="task-detail">Time: ${t.reading.time}</span><br><span class="task-detail">${t.reading.summary}</span>`, "Summary written? (1 pt)")}
+      ${renderTask("email", dayName, "✉️", "Email Writing", "area-email", `<strong>Topic: ${t.email.topic}</strong><br><span class="task-detail">Length: ${t.email.sentences}</span><br><span class="task-detail">Include: What I did, What I learned, What was difficult, My improvement</span>`, "Email completed? (2 pts)")}
+      ${renderTask("ai", dayName, "🤖", "AI Learning", "area-ai", t.ai.task, "AI task done? (1 pt)")}
+      ${renderTask("logic", dayName, "🧩", "Logic / Problem Solving", "area-logic", `<ol style="margin:4px 0 0 16px;font-size:12px;color:var(--text-secondary);line-height:1.8;">${t.logic.map(q=>`<li>${q}</li>`).join('')}</ol>`, "Logic solved? (1 pt)")}
+      ${renderTask("notes", dayName, "📝", "Reflection Notes", "area-notes", `<span class="task-detail">Fill out the notes template:<br>• Task — What task is this for?<br>• What I did<br>• What I learned<br>• What was difficult<br>• My improvement</span>`, "Notes written? (1 pt)")}
+    `;
+  }
+
+  if (dayData.type === "project") {
+    const t = dayData.tasks[key];
+    return renderTask("project", dayName, "🛠️", "Friday Mini-Project", "area-project",
+      `<strong>${t.project}</strong><br><span class="task-detail">Write a summary of your project. Upload your work if possible.</span>`,
+      "Project completed? (4 pts)");
+  }
+
+  if (dayData.type === "light") {
+    const t = dayData.tasks[key];
+    return renderTask("activity", dayName, "🎮", "Saturday Activity", "area-fun",
+      `<strong>${t.activity}</strong><br><span class="task-detail">Write a short reflection about the experience.</span>`,
+      "Activity done? (2 pts)");
+  }
+
+  if (dayData.type === "review") {
+    return renderTask("review", dayName, "🌟", "Weekly Review", "area-review",
+      `<span class="task-detail">Go to the <strong>Report</strong> tab and fill out your weekly review:<br>• What I learned this week<br>• My best task<br>• My biggest mistake<br>• My target for next week<br><br>Then celebrate your progress! 🎉</span>`,
+      "Review completed? (2 pts)");
+  }
+
+  return '';
+}
+
+function renderTask(taskId, dayName, icon, area, areaCls, desc, checkLabel) {
+  const checked = isChecked(taskId, dayName);
+  return `
+    <div class="task-item ${areaCls} ${checked?'done':''}">
+      <span class="task-area ${areaCls}">${icon} ${area}</span>
+      <div class="task-desc">${desc}</div>
+      <div class="task-check ${checked?'checked':''}" onclick="toggleKpi('${taskId}','${dayName}')">
+        <span class="box">${checked?'✓':''}</span>
+        <span class="label">${checkLabel}</span>
+      </div>
+    </div>
+  `;
+}
+
+// ---- KPI TAB ----
+function renderKPI() {
+  const ws = getWeekScore(state.week);
+  const rating = getRating(ws.earned);
+
+  // Calculate area breakdown
+  const dayNames = ["Monday","Tuesday","Wednesday","Thursday"];
+  let areaScores = {reading:0,email:0,ai:0,logic:0,notes:0};
+  let areaTotals = {reading:4,email:8,ai:4,logic:4,notes:4};
+  dayNames.forEach(d => {
+    if (isChecked("reading",d)) areaScores.reading += 1;
+    if (isChecked("email",d)) areaScores.email += 2;
+    if (isChecked("ai",d)) areaScores.ai += 1;
+    if (isChecked("logic",d)) areaScores.logic += 1;
+    if (isChecked("notes",d)) areaScores.notes += 1;
+  });
+
+  let streakDays = 0;
+  const allDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  for (const d of allDays) {
+    const s = getDayScore(d);
+    if (s.earned === s.total && s.total > 0) streakDays++;
+    else break;
+  }
+
+  return `
+    <h2 class="section-title">Week ${state.week+1} — KPI Dashboard</h2>
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="val" style="color:var(--accent-cyan);">${ws.earned}</div>
+        <div class="lbl">Points Earned</div>
+      </div>
+      <div class="kpi-box">
+        <div class="val" style="color:var(--accent-amber);">${ws.total}</div>
+        <div class="lbl">Points Possible</div>
+      </div>
+      <div class="kpi-box">
+        <div class="val" style="color:var(--accent-emerald);">${streakDays}</div>
+        <div class="lbl">Day Streak 🔥</div>
+      </div>
+      <div class="kpi-box">
+        <div class="val" style="color:var(--accent-violet);">${Math.round((ws.earned/ws.total)*100)||0}%</div>
+        <div class="lbl">Completion</div>
+      </div>
+    </div>
+
+    <div class="kpi-full">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:700;font-size:14px;">Weekly Rating</div>
+        <span class="rating-badge ${rating.cls}">${rating.text}</span>
+      </div>
+      <div class="progress-bar" style="margin-top:12px;">
+        <div class="fill" style="width:${Math.round((ws.earned/30)*100)}%; background:${ws.earned>=25?'var(--accent-emerald)':ws.earned>=20?'var(--accent-blue)':'var(--accent-rose)'};"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span style="font-size:10px;color:var(--accent-rose);">&lt;20 Needs work</span>
+        <span style="font-size:10px;color:var(--accent-blue);">20-25 Good</span>
+        <span style="font-size:10px;color:var(--accent-emerald);">25-30 Excellent</span>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">Area Breakdown (Mon–Thu)</h3>
+      ${renderAreaBar("📖 Reading", areaScores.reading, areaTotals.reading, "var(--accent-amber)")}
+      ${renderAreaBar("✉️ Email", areaScores.email, areaTotals.email, "var(--accent-blue)")}
+      ${renderAreaBar("🤖 AI Learning", areaScores.ai, areaTotals.ai, "var(--accent-violet)")}
+      ${renderAreaBar("🧩 Logic", areaScores.logic, areaTotals.logic, "var(--accent-cyan)")}
+      ${renderAreaBar("📝 Notes", areaScores.notes, areaTotals.notes, "var(--accent-emerald)")}
+    </div>
+
+    <div style="margin-top:20px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">12-Week Progress</h3>
+      ${renderWeeklyChart()}
+    </div>
+  `;
+}
+
+function renderAreaBar(label, earned, total, color) {
+  const pct = Math.round((earned/total)*100);
+  return `
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;font-weight:600;">${label}</span>
+        <span style="font-size:12px;font-weight:700;color:${color};">${earned}/${total}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="fill" style="width:${pct}%;background:${color};"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderWeeklyChart() {
+  let html = '<div style="display:flex;gap:4px;align-items:flex-end;height:100px;padding:8px 0;">';
+  for (let i = 0; i < 12; i++) {
+    const ws = getWeekScore(i);
+    const pct = ws.total > 0 ? (ws.earned / 30) * 100 : 0;
+    const color = ws.earned >= 25 ? 'var(--accent-emerald)' : ws.earned >= 20 ? 'var(--accent-blue)' : ws.earned > 0 ? 'var(--accent-amber)' : 'rgba(255,255,255,0.08)';
+    html += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <div style="font-size:9px;color:var(--text-muted);font-weight:700;">${ws.earned}</div>
+      <div style="width:100%;height:${Math.max(pct,4)}%;background:${color};border-radius:4px 4px 0 0;min-height:3px;transition:height 0.3s;"></div>
+      <div style="font-size:8px;color:${state.week===i?'var(--accent-cyan)':'var(--text-muted)'};font-weight:${state.week===i?800:600};">W${i+1}</div>
+    </div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+// ---- NOTES TAB ----
+function renderNotes() {
+  const childNotes = state.notes.filter(n => n.child === state.child && n.week === state.week);
+
+  return `
+    <h2 class="section-title">Week ${state.week+1} — Reflection Notes</h2>
+
+    <div class="notes-form" id="notesForm">
+      <label>📌 Task Area</label>
+      <select id="noteTask">
+        <option value="Reading">Reading</option>
+        <option value="Email">Email Writing</option>
+        <option value="AI">AI Learning</option>
+        <option value="Logic">Logic / Problem Solving</option>
+        <option value="Project">Friday Project</option>
+      </select>
+
+      <label>📋 What I did</label>
+      <textarea id="noteDid" placeholder="Describe what you worked on..."></textarea>
+
+      <label>💡 What I learned</label>
+      <textarea id="noteLearned" placeholder="What new things did you discover?"></textarea>
+
+      <label>⚡ What was difficult</label>
+      <textarea id="noteDifficult" placeholder="What challenged you?"></textarea>
+
+      <label>📈 My improvement</label>
+      <textarea id="noteImprovement" placeholder="How will you do better next time?"></textarea>
+
+      <div style="margin-top:16px;display:flex;gap:8px;">
+        <button class="btn btn-primary" onclick="saveNote()">💾 Save Note</button>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:700;margin:20px 0 12px;">Saved Notes (${childNotes.length})</h3>
+    ${childNotes.length === 0 ? '<div class="empty-state"><div class="icon">📝</div>No notes yet. Fill out the form above!</div>' :
+      childNotes.map((n,i) => `
+        <div class="saved-note">
+          <div class="meta">${n.task} · ${new Date(n.timestamp).toLocaleDateString()} ${new Date(n.timestamp).toLocaleTimeString()}</div>
+          <div class="field"><strong>Did:</strong> ${n.did}</div>
+          <div class="field"><strong>Learned:</strong> ${n.learned}</div>
+          <div class="field"><strong>Difficult:</strong> ${n.difficult}</div>
+          <div class="field"><strong>Improvement:</strong> ${n.improvement}</div>
+          <button class="btn btn-rose" style="margin-top:8px;padding:6px 12px;font-size:11px;" onclick="deleteNote(${i})">🗑️ Delete</button>
+        </div>
+      `).join('')
+    }
+  `;
+}
+
+// ---- SUBMISSIONS TAB ----
+function renderSubmissions() {
+  const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const required = ["Reading Summary","Email Writing","Notes"];
+  const optional = ["AI Work","Logic Answers"];
+
+  let html = `<h2 class="section-title">Week ${state.week+1} — Submissions</h2>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;">📤 Submission Checklist</div>
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+        After completing tasks each day, check off what you've submitted. Required items are marked in red; optional items are gray.
+      </div>
+    </div>`;
+
+  dayNames.forEach(dayName => {
+    const dayData = CURRICULUM[state.week].days[dayName];
+    if (dayData.type !== "core") {
+      if (dayData.type === "project") {
+        const sk = `${state.child}-${state.week}-${dayName}-project-sub`;
+        const done = !!state.submissions[sk];
+        html += `<div class="submission-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span style="font-weight:700;">🛠️ ${dayName}</span>
+            <span class="sub-status ${done?'sub-done':'sub-required'}">${done?'Done':'Required'}</span>
+          </div>
+          <div class="task-check ${done?'checked':''}" onclick="toggleSub('${sk}')">
+            <span class="box">${done?'✓':''}</span>
+            <span class="label">Project + Summary uploaded</span>
+          </div>
+        </div>`;
+      }
+      return;
+    }
+
+    html += `<div class="submission-card">
+      <div style="font-weight:700;margin-bottom:10px;">📅 ${dayName}</div>`;
+
+    required.forEach(item => {
+      const sk = `${state.child}-${state.week}-${dayName}-${item}`;
+      const done = !!state.submissions[sk];
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div class="task-check ${done?'checked':''}" onclick="toggleSub('${sk}')" style="flex:1;">
+          <span class="box">${done?'✓':''}</span>
+          <span class="label">${item}</span>
+        </div>
+        <span class="sub-status sub-required" style="margin-left:8px;">Required</span>
+      </div>`;
+    });
+
+    optional.forEach(item => {
+      const sk = `${state.child}-${state.week}-${dayName}-${item}`;
+      const done = !!state.submissions[sk];
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div class="task-check ${done?'checked':''}" onclick="toggleSub('${sk}')" style="flex:1;">
+          <span class="box">${done?'✓':''}</span>
+          <span class="label">${item}</span>
+        </div>
+        <span class="sub-status sub-optional" style="margin-left:8px;">Optional</span>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  return html;
+}
+
+// ---- REPORT TAB ----
+function renderReport() {
+  const fields = [
+    {id:"learned", label:"📚 What I learned this week", emoji:"📚"},
+    {id:"best", label:"⭐ My best task", emoji:"⭐"},
+    {id:"mistake", label:"💪 My biggest mistake / challenge", emoji:"💪"},
+    {id:"target", label:"🎯 My target for next week", emoji:"🎯"}
+  ];
+
+  const ws = getWeekScore(state.week);
+  const rating = getRating(ws.earned);
+
+  return `
+    <h2 class="section-title">Week ${state.week+1} — Weekly Report</h2>
+
+    <div class="kpi-full" style="margin-bottom:16px;text-align:center;">
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;">Week ${state.week+1} Score</div>
+      <div style="font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--accent-cyan);">${ws.earned}<span style="font-size:20px;color:var(--text-muted);">/${ws.total}</span></div>
+      <span class="rating-badge ${rating.cls}" style="margin-top:12px;">${rating.text}</span>
+    </div>
+
+    ${fields.map(f => {
+      const rk = `${state.child}-${state.week}-${f.id}`;
+      const val = state.reports[rk] || '';
+      return `<div class="report-section">
+        <h4>${f.label}</h4>
+        <textarea id="report_${f.id}" placeholder="Write here..." onchange="saveReport('${f.id}', this.value)">${val}</textarea>
+      </div>`;
+    }).join('')}
+
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn btn-emerald" onclick="completeReview()">✅ Mark Review Complete</button>
+    </div>
+
+    <div style="margin-top:24px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">Past Weekly Reports</h3>
+      ${renderPastReports()}
+    </div>
+  `;
+}
+
+function renderPastReports() {
+  let html = '';
+  for (let w = 0; w < 12; w++) {
+    const hasContent = ["learned","best","mistake","target"].some(f => state.reports[`${state.child}-${w}-${f}`]);
+    if (!hasContent) continue;
+    const ws = getWeekScore(w);
+    html += `<div class="saved-note" style="border-left-color:var(--accent-violet);">
+      <div class="meta">Week ${w+1} · Score: ${ws.earned}/${ws.total}</div>`;
+    ["learned","best","mistake","target"].forEach(f => {
+      const val = state.reports[`${state.child}-${w}-${f}`];
+      if (val) html += `<div class="field"><strong>${f}:</strong> ${val}</div>`;
+    });
+    html += `</div>`;
+  }
+  return html || '<div class="empty-state"><div class="icon">📑</div>No reports yet.</div>';
+}
+
+// ============================
+// EVENT HANDLERS
+// ============================
+function switchChild(c) { state.child = c; render(); }
+function switchTab(t) { state.tab = t; render(); }
+function switchWeek(w) { state.week = w; state.openDay = null; render(); }
+function toggleDay(d) { state.openDay = state.openDay === d ? null : d; render(); }
+
+function saveNote() {
+  const note = {
+    child: state.child,
+    week: state.week,
+    task: document.getElementById('noteTask').value,
+    did: document.getElementById('noteDid').value,
+    learned: document.getElementById('noteLearned').value,
+    difficult: document.getElementById('noteDifficult').value,
+    improvement: document.getElementById('noteImprovement').value,
+    timestamp: Date.now()
+  };
+  if (!note.did && !note.learned) { alert("Please fill in at least 'What I did' and 'What I learned'."); return; }
+  state.notes.push(note);
+  saveState();
+  render();
+}
+
+function deleteNote(index) {
+  const childNotes = state.notes.filter(n => n.child === state.child && n.week === state.week);
+  const noteToDelete = childNotes[index];
+  state.notes = state.notes.filter(n => n !== noteToDelete);
+  saveState();
+  render();
+}
+
+function toggleSub(key) {
+  state.submissions[key] = !state.submissions[key];
+  saveState();
+  render();
+}
+
+function saveReport(field, value) {
+  state.reports[`${state.child}-${state.week}-${field}`] = value;
+  saveState();
+}
+
+function completeReview() {
+  toggleKpi('review', 'Sunday');
+}
+
+function attachEvents() {
+  // Events attached inline via onclick
+}
+
+// ============================
+// MAKE FUNCTIONS GLOBAL
+// ============================
+window.switchChild = switchChild;
+window.switchTab = switchTab;
+window.switchWeek = switchWeek;
+window.toggleDay = toggleDay;
+window.toggleKpi = toggleKpi;
+window.saveNote = saveNote;
+window.deleteNote = deleteNote;
+window.toggleSub = toggleSub;
+window.saveReport = saveReport;
+window.completeReview = completeReview;
+
+// Initial render
+render();
+</script>
+</body>
+</html>
